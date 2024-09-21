@@ -1,0 +1,13 @@
+services:
+  db:
+    hostname: db
+    restart: unless-stopped
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=test
+    ports:
+      - 5430:5432
+    cap_add:
+      - SYS_PTRACE
