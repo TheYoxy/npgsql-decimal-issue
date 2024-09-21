@@ -45,6 +45,12 @@ await foreach (var amount in ctx.Set<MainData>()
 
 Console.WriteLine($"Sum (client side|async enumerable): {sum2}");
 
+// does not throw since the rounding is done in db, but data is actually lost
+var roundedResponse = await ctx.Set<MainData>()
+    .SumAsync(mainData => Math.Round(mainData.DependentData.Sum(dependentData =>
+        dependentData.Amount * dependentData.Quantity * (1 + dependentData.Divider / 100m)), 2));
+Console.WriteLine($"Sum (with rounding): {roundedResponse}");
+
 // throw OverflowException
 var response = await ctx.Set<MainData>()
     .SumAsync(mainData => mainData.DependentData.Sum(dependentData =>
